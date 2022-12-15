@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>ToDo List App</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link th:href="@{/mainFile.css}" rel="stylesheet">
+    </head>
+    <body>
+        <p>Write your todo item here</p>
+        <input id="inputBox"/>
+        <button onclick = "addTodo();">Submit</button>
+        <div id="itemContainer"></div>
+        TODO: ADD PROPER CSS STYLING
+        TODO: MAKE IT SO YOU CAN RELOAD THE PAGE AND STILL HAVE THE DATA
+        TODO: UPLOAD TO GITHUB
+    </body>
+    
+    <script>
+        items = "[[${items}]]".split(",");
+        
+        for (i=0;i<items.length;i++) {
+            if (items[i] != "") {
+                // Create the p element holding the item's name
+                paragraph = document.createElement("p");
+                paragraph.innerHTML = items[i];
+
+                //Create the button which is placed next to the items name
+                button = document.createElement("button");
+                button.innerHTML = "Delete Item";
+                button.setAttribute("onclick", "deleteItem('" + items[i] + "')");
+                button.setAttribute('myattribute', 'box');;
+
+
+                // Add the elements
+                document.getElementById("itemContainer").appendChild(paragraph);
+                document.getElementById("itemContainer").appendChild(button);
+            }
+        }
+        function addTodo () {
+            window.location.href = '/uploadtodo?items=' + document.getElementById("inputBox").value;
+        }
+        
+        /*function deleteItem () {
+            window.location.href = '/deleteitem?itemToDelete=' + document.getElementById("deleteItemInputBox").value;
+        }*/
+    
+        function deleteItem (itemToRemove) {
+            window.location.href = '/deleteitem?itemToDelete=' + itemToRemove;
+        }
+    </script>
+</html>
