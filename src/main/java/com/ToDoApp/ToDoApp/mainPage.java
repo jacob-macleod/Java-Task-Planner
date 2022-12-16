@@ -23,13 +23,16 @@ import com.ToDoApp.ToDoApp.loginHandler.*;
 @Controller
 public class mainPage {
     public String items = "";
-	@GetMapping("/dashboard")
+    public String username = "";
+    public String password = "";
+
+	/*@GetMapping("/dashboard")
 	public String index(Model model) {
             // If the @Controller tag is @Controller, it looks for index.html in resources. If not, it returns the string. For example, if it is @RestController
             // It returns the string
             model.addAttribute("items", "I hold your todo items");
 		return "index";
-	}
+	}*/
 
     @GetMapping("/")
     public String loadSignInPage(Model model) {
@@ -39,8 +42,8 @@ public class mainPage {
     @GetMapping("/signIn")
     public String signIn(@RequestParam(name="credentials", required=false, defaultValue="World") String credentials, Model model) {
         System.out.println(credentials);
-        String username = credentials.split(",")[0];
-        String password = credentials.split(",")[1];
+        username = credentials.split(",")[0];
+        password = credentials.split(",")[1];
 
         String passed = "FAIL";
 
@@ -52,6 +55,13 @@ public class mainPage {
         }
 
         if (passed.equals("PASS")) {
+            try {
+                items = loginHandler.findToDoItems(username, password);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            model.addAttribute("items", items);
             return "index";
         } else {
             return "signIn";
@@ -61,6 +71,12 @@ public class mainPage {
         @GetMapping("/uploadtodo")
         public String upload(@RequestParam(name="items", required=false, defaultValue="World") String itemUploaded, Model model) {
             items = items + "," + itemUploaded;
+            try {
+                loginHandler.addNewItem(username, password, itemUploaded);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             model.addAttribute("items", items);
             return "index";
         }
