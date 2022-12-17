@@ -25,20 +25,14 @@ public class mainPage {
     public String items = "";
     public String username = "";
     public String password = "";
-
-	/*@GetMapping("/dashboard")
-	public String index(Model model) {
-            // If the @Controller tag is @Controller, it looks for index.html in resources. If not, it returns the string. For example, if it is @RestController
-            // It returns the string
-            model.addAttribute("items", "I hold your todo items");
-		return "index";
-	}*/
-
+    
+    // When user first accesses the app get them to sign in
     @GetMapping("/")
     public String loadSignInPage(Model model) {
         return "signIn";
     }
-
+    
+    // When the user clicks the sign in button, going to http://localhost:8080/signIn?credentials=username,password
     @GetMapping("/signIn")
     public String signIn(@RequestParam(name="credentials", required=false, defaultValue="World") String credentials, Model model) {
         System.out.println(credentials);
@@ -48,7 +42,7 @@ public class mainPage {
         String passed = "FAIL";
 
         try {
-            passed = loginHandler.saveCredentials(username, password);
+            passed = loginHandler.verifyCredentials(username, password);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -74,7 +68,6 @@ public class mainPage {
             try {
                 loginHandler.addNewItem(username, password, itemUploaded);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             model.addAttribute("items", items);

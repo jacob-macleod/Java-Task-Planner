@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sign In</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link th:href="@{/mainFile.css}" rel="stylesheet">
+    </head>
+    <body>
+        <p>Username</p>
+        <input id="username" placeholder="username"></input>
+        <p>Password</p>
+        <input id="password" placeholder="password"></input>
+        <button onclick="loadSignInPage()">Sign In</button>
+    </body>
+    <script>
+
+        function loadSignInPage() {
+            username = document.getElementById("username").value;
+            password = document.getElementById("password").value;
+
+            if (username != "" && password != "") {
+                window.location.href = "/signIn?credentials=" + username + "," + password;
+            }
+        }
+    </script>
+
+</html>
